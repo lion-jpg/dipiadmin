@@ -17,7 +17,7 @@ class ProteccionResource extends Resource
 {
     protected static ?string $model = Proteccion::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-exclamation';
     protected static ?string $navigationLabel = 'Proteccion';
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of proteccion    ';
@@ -39,7 +39,17 @@ class ProteccionResource extends Resource
                 Forms\Components\FileUpload::make('imagen_pro')
                     ->preserveFilenames(),
                 Forms\Components\FileUpload::make('video_pro')
-                    ->preserveFilenames(),
+                ->preserveFilenames()
+                ->disk('public')
+                ->directory('videos')
+                ->maxSize(200000) // 200 MB
+                ->columnSpanFull()
+                ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 200MB (aprox. 4 minutos)')
+                ->hint('Asegúrate de que el archivo no exceda el límite de tamaño')
+                ->hintIcon('heroicon-m-information-circle')
+                ->previewable(true)
+                ->downloadable()
+                ->acceptedFileTypes(['video/mp4', 'video/mov', 'video/avi']),
             ]);
     }
 
@@ -54,7 +64,8 @@ class ProteccionResource extends Resource
                 Tables\Columns\ImageColumn::make('imagen_pro')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('video_pro')
-                    ->searchable(),
+                    ->searchable()
+                    ->view('filament.tables.columns.video-pro'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

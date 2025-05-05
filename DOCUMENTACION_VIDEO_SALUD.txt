@@ -1,0 +1,101 @@
+DOCUMENTACIÓN: CONFIGURACIÓN DE SUBIDA DE VIDEOS EN MÓDULO SALUD
+=============================================================
+
+1. CONFIGURACIÓN DE LARAVEL
+--------------------------
+1.1. Configurar el idioma por defecto en config/app.php:
+    - Cambiar 'locale' => env('APP_LOCALE', 'en') a 'locale' => 'es'
+
+1.2. Crear archivo de idioma en resources/lang/es/validation.php:
+    <?php
+    return [
+        'max' => [
+            'file' => 'El archivo :attribute no debe ser mayor que :max kilobytes.',
+        ],
+        'attributes' => [
+            'video_sal' => 'el video',
+        ],
+    ];
+
+2. CONFIGURACIÓN DE LIVEWIRE
+---------------------------
+2.1. Crear/Modificar config/livewire.php:
+    <?php
+    return [
+        'temporary_file_upload' => [
+            'disk' => 'public',
+            'rules' => ['required', 'file', 'max:204800'],
+            'directory' => 'livewire-tmp',
+            'middleware' => 'throttle:60,1',
+            'preview_mimes' => [
+                'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
+                'mov', 'avi', 'wmv', 'mp3', 'm4a',
+                'jpg', 'jpeg', 'mpga', 'webp', 'wma',
+            ],
+            'max_upload_time' => 5,
+            'cleanup' => true,
+        ],
+    ];
+
+3. CONFIGURACIÓN DE PHP
+----------------------
+3.1. Crear archivo .htaccess en la raíz del proyecto:
+    php_value upload_max_filesize 200M
+    php_value post_max_size 200M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+
+4. CONFIGURACIÓN DE FILAMENT
+--------------------------
+4.1. Modificar app/Filament/Resources/SaludResource.php:
+    - Configurar el componente FileUpload para video_sal:
+    Forms\Components\FileUpload::make('video_sal')
+        ->preserveFilenames()
+        ->disk('public')
+        ->directory('videos')
+        ->maxSize(200000) // 200 MB
+        ->columnSpanFull()
+        ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 200MB (aprox. 4 minutos)')
+        ->hint('Asegúrate de que el archivo no exceda el límite de tamaño')
+        ->hintIcon('heroicon-m-information-circle')
+
+5. COMANDOS PARA APLICAR CAMBIOS
+-------------------------------
+5.1. Limpiar caché de Laravel:
+    php artisan config:clear
+    php artisan cache:clear
+
+5.2. Reiniciar el servidor web (Apache)
+
+6. VERIFICACIÓN
+--------------
+6.1. Verificar que se pueden subir videos:
+    - Hasta 4 minutos de duración
+    - Tamaño máximo de 200MB
+    - Formatos permitidos: MP4, MOV, AVI
+    - Mensajes de error en español
+
+7. NOTAS IMPORTANTES
+-------------------
+7.1. El tamaño del video puede variar según:
+    - Resolución del video
+    - Tasa de bits
+    - Formato de compresión
+    - Calidad del audio
+
+7.2. Si se necesita ajustar el límite de tamaño:
+    - Modificar maxSize en SaludResource.php
+    - Modificar rules en livewire.php
+    - Modificar valores en .htaccess
+
+8. SOLUCIÓN DE PROBLEMAS
+-----------------------
+8.1. Si aparece error "validation.max.file":
+    - Verificar que todos los archivos de configuración estén correctamente modificados
+    - Limpiar caché de Laravel
+    - Reiniciar el servidor web
+
+8.2. Si el video no se sube:
+    - Verificar permisos de directorio
+    - Verificar espacio en disco
+    - Verificar configuración de PHP 

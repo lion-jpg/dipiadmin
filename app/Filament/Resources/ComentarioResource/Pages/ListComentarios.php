@@ -16,4 +16,8 @@ class ListComentarios extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+    protected function getCreatedRedirectUrl(): string
+    {
+        return route('filament.admin.pages.dashboard');
+    }
 }

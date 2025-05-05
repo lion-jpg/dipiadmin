@@ -17,7 +17,7 @@ class EducacionResource extends Resource
 {
     protected static ?string $model = Educacion::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = 'Educación';
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of educacion ';
@@ -39,7 +39,15 @@ class EducacionResource extends Resource
                 Forms\Components\FileUpload::make('imagen_edu')
                     ->preserveFilenames(),
                 Forms\Components\FileUpload::make('video_edu')
-                    ->preserveFilenames(),
+                    ->preserveFilenames()
+                    ->disk('public')
+                    ->directory('videos')
+                    ->maxSize(200000) // 200 MB
+                    ->columnSpanFull()
+                    ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 200MB (aprox. 4 minutos)')
+                    ->hint('Asegúrate de que el archivo no exceda el límite de tamaño')
+                    ->hintIcon('heroicon-m-information-circle')
+                        ,
             ]);
     }
 
@@ -54,7 +62,8 @@ class EducacionResource extends Resource
                 Tables\Columns\ImageColumn::make('imagen_edu')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('video_edu')
-                    ->searchable(),
+                    ->searchable()
+                    ->view('filament.tables.columns.video-edu'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

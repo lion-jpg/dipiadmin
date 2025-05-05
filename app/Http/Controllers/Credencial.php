@@ -27,8 +27,8 @@ class Credencial extends Controller
         $pdf->SetFont('helvetica', '', 5.5);
 
         // Add background image
-        $backgroundImagePath = storage_path('app/public/cre_A.jpg'); // Path to your background image file
-        $pdf->Image($backgroundImagePath, 0, 0, 86, 54, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
+        $backgroundImagePath = storage_path('app/public/cre_A.png'); // Path to your background image file
+        $pdf->Image($backgroundImagePath, 0, 0, 86, 54, 'PNG', '', '', true, 300, '', false, false, 0, false, false, false);
         // $backgroundImagePath = storage_path('app/public/cred_A.jpeg'); // Path to your background image file
         // $pdf->Image($backgroundImagePath, 0, 0, 100, 70, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
 
@@ -52,20 +52,20 @@ class Credencial extends Controller
         $pdf->SetXY(39.5, 26); // Nueva posición para el siguiente elemento
         $pdf->Cell(0, 9, htmlspecialchars($registrar['centro_infantil']));
 
-        $datos = "INFORMACIÓN DE CONTACTO\n"
+        $datos = "INFORMACIÓN\n"
         . "------------------------\n"
         . "Padre: " . $registrar['nombre_padre'] . "\n"
-        . "📱Celular: " . $registrar['celular_p'] . "\n"
+        . "Cel.: " . $registrar['celular_p'] . "\n"
         . "------------------------\n"
         . "Madre: " . $registrar['nombre_madre'] . "\n"
-        . "📱Celular: " . $registrar['celular_m'] . "\n"
+        . "Cel.: " . $registrar['celular_m'] . "\n"
         . "------------------------\n"
-        . "📍Dirección: " . $registrar['direccion'] . "\n"
-        . "🏫Centro Infantil: " . $registrar['centro_infantil'];
+        . "Dirección: " . $registrar['direccion'] . "\n";
+        // . "🏫Centro Infantil: " . $registrar['centro_infantil'];
 
 
     // $datos = $registrar['nombres']. $registrar['apellidos']. $registrar['celular1'];
-    $pdf->write2DBarcode($datos , 'QRCODE,H', 40, 33, 15.5, 14.5, array(), 'N');
+    $pdf->write2DBarcode($datos , 'QRCODE,H', 39.5, 32.5, 18.7, 18.7, array(), 'N');
         // $pdf->SetXY(70, 34.5); // Nueva posición para el siguiente elemento
         // $pdf->Cell(0, 10, htmlspecialchars($registrar['celular1']));
         

@@ -17,7 +17,7 @@ class NutricionResource extends Resource
 {
     protected static ?string $model = Nutricion::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-heart';
     protected static ?string $navigationLabel = 'Nutricion';
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of nutricion';
@@ -39,7 +39,13 @@ class NutricionResource extends Resource
                 Forms\Components\FileUpload::make('imagen_nut')
                     ->preserveFilenames(),
                 Forms\Components\FileUpload::make('video_nut')
-                    ->preserveFilenames(),
+                    ->preserveFilenames()
+                    ->disk('public')
+                    ->directory('videos')
+                    ->maxSize(200000) // 200 MB
+                    ->columnSpanFull()
+                    ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 200MB (aprox. 4 minutos)')
+                    ->hint('Asegúrate de que el archivo no exceda el límite de tamaño')
             ]);
     }
 
@@ -54,7 +60,8 @@ class NutricionResource extends Resource
                 Tables\Columns\ImageColumn::make('imagen_nut')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('video_nut')
-                    ->searchable(),
+                    ->searchable()
+                    ->view('filament.tables.columns.video-nut'),        
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -17,7 +17,7 @@ class ComentarioResource extends Resource
 {
     protected static ?string $model = Comentario::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
     protected static ?string $navigationLabel = 'Comentarios';
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of comentarios';

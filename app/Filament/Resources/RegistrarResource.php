@@ -20,7 +20,7 @@ class RegistrarResource extends Resource
 {
     protected static ?string $model = Registrar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationLabel = 'Registrar';
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of users';

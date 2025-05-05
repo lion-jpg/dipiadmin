@@ -35,7 +35,7 @@ class SaludController extends Controller
                 'titulo_sal' => 'required',
                 'descripcion_sal' => 'required',
                 'imagen_sal' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'video_sal' => 'nullable|file|mimes:mp4,mov,avi|max:102400'
+                'video_sal' => 'nullable|file|mimes:mp4,mov,avi|max:204800'
             ]);
 
             $imagenPath = null;
@@ -83,7 +83,7 @@ class SaludController extends Controller
     {
         return view('saluds.edit', compact('salud'));
     }
-
+ 
     /**
      * Update the specified resource in storage.
      */
@@ -94,7 +94,7 @@ class SaludController extends Controller
                 'titulo_sal' => 'required',
                 'descripcion_sal' => 'required',
                 'imagen_sal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'video_sal' => 'nullable|file|mimes:mp4,mov,avi|max:102400'
+                'video_sal' => 'nullable|file|mimes:mp4,mov,avi|max:204800'
             ]);
 
             if ($request->hasFile('imagen_sal')) {

@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSalud extends CreateRecord
 {
     protected static string $resource = SaludResource::class;
+    protected function getCreatedRedirectUrl(): string
+    {
+        return route('filament.admin.pages.dashboard');
+    }
 }

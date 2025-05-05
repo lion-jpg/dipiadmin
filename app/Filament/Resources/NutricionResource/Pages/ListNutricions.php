@@ -14,6 +14,11 @@ class ListNutricions extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
         ];
     }
+    protected function getCreatedRedirectUrl(): string
+    {
+        return route('filament.admin.pages.dashboard');
+    }   
 }

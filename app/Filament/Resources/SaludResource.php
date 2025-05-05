@@ -17,8 +17,9 @@ class SaludResource extends Resource
 {
     protected static ?string $model = Salud::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+    protected static ?string $navigationIcon = 'heroicon-o-eye-dropper';
     protected static ?string $navigationLabel = 'Salud';
+    
     protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationBadgeTooltip = 'The number of salud';
     public static function getNavigationBadge(): ?string
@@ -41,12 +42,14 @@ class SaludResource extends Resource
                     ->preserveFilenames()
                     ->disk('public')
                     ->directory('videos')
-                    ->maxSize(100000) // 100 MB (el valor está en KB)
-                    // ->acceptedFileTypes(['video/mp4', 'video/mov', 'video/avi'])
+                    ->maxSize(200000) // 200 MB
                     ->columnSpanFull()
-                    ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 100MB')
+                    ->helperText('Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 200MB (aprox. 4 minutos)')
                     ->hint('Asegúrate de que el archivo no exceda el límite de tamaño')
-                    ->hintIcon('heroicon-m-information-circle'),
+                    ->hintIcon('heroicon-m-information-circle')
+                    ->previewable(true)
+                    ->downloadable()
+                    ->acceptedFileTypes(['video/mp4', 'video/mov', 'video/avi']),
             ]);
     }
 
@@ -60,8 +63,8 @@ class SaludResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('imagen_sal')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('video_sal')
-                    ->searchable(),
+                Tables\Columns\ViewColumn::make('video_sal')
+                    ->view('filament.tables.columns.video-sal'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -98,5 +101,10 @@ class SaludResource extends Resource
             'create' => Pages\CreateSalud::route('/create'),
             'edit' => Pages\EditSalud::route('/{record}/edit'),
         ];
+    }
+
+    protected function getCreatedRedirectUrl(): string
+    {
+        return route('filament.admin.pages.dashboard');
     }
 }
